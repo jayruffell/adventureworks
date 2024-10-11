@@ -15,12 +15,3 @@ https://robinphetsavongdata.wordpress.com/2019/06/18/part-1-designing-and-buildi
 https://robinphetsavongdata.wordpress.com/2019/06/19/part-2-designing-and-building-the-data-warehouse-dimension-tables/
 https://robinphetsavongdata.wordpress.com/2019/06/26/99/
 https://robinphetsavongdata.wordpress.com/2019/07/03/part-4-automating-a-data-pipeline/
-
-
-
-NOTE FOR INSTALLING THE ADVENTUREWORKS DB:
-- had to run like this in SQLCMD mode
-:r "C:\adventureworks\AdventureWorks-oltp-install-script\instawdb.sql"
-
-- after first updating instawdb.sql to have this line near the top:
-:setvar SqlSamplesSourceDataPath "C:\adventureworks\AdventureWorks-oltp-install-script\" *including last slash*
