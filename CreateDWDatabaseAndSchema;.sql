@@ -4,5 +4,5 @@ GO
 USE AdventureWorksDW;
 GO
 
-CREATE SCHEMA SalesDW;
+CREATE SCHEMA Sales;
 GO
