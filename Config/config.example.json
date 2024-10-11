@@ -1,0 +1,14 @@
+// from quick chat with ChatGPT
+{
+    "database": {
+      "host": "localhost",
+      "port": 5432,
+      "user": "your_username",
+      "password": "your_password",
+      "name": "your_database"
+    },
+    "apiKeys": {
+      "serviceX": "your_service_x_key"
+    }
+  }
+  
