@@ -1,4 +1,5 @@
 --// Script to create our first fact table along with additional indexes //--
+-- J note: id cols are called "keys"  following suggestion from kimball.  
 USE AdventureWorksDW;
 GO
 
@@ -9,7 +10,7 @@ END
 GO
 
 CREATE TABLE Sales.Fact_SalesOrderDetail (
-	SalesOrderDetailKey int PRIMARY KEY, -- SQL Sever will automatically create a clustered index on the primary key here
+	SalesOrderDetailKey int PRIMARY KEY, -- SQL Sever will automatically create a clustered index on the primary key here. JAY NOTE: the type of index to use  is context dependent, so don't just copy this code for other uses.
 	SalesOrderKey INT NOT NULL,
 	ProductKey INT NOT NULL,
 	SpecialOfferKey INT NOT NULL,
@@ -38,6 +39,7 @@ CREATE TABLE Sales.Fact_SalesOrderDetail (
 );
 
 --Create nonclustered indexes for our *potentially* often used dimension keys
+-- JAY NOTE: the type of index to use  is context dependent, so don't just copy this code for other uses.
 
 CREATE nonclustered index NI_ProductKey ON Sales.Fact_SalesOrderDetail (ProductKey);
 CREATE nonclustered index NI_SalesOrderStatusKey ON Sales.Fact_SalesOrderDetail (SalesOrderStatusKey);

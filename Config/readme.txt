@@ -1,0 +1,1 @@
+ChatGPT suggested the structure of DB files should be one set of folders for SQL files and another set for configuration files. So this is the configuration files folder, obviously.
