@@ -1,5 +1,6 @@
 --// Script to create our first fact table along with additional indexes //--
 -- J note: id cols are called "keys"  following suggestion from kimball.  
+-- ALSO chatgpt reckons it can be a good idea to allow NULLs and deal with them later, as opposed to the below approach.
 USE AdventureWorksDW;
 GO
 

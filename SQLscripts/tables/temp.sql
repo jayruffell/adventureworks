@@ -1,3 +1,3 @@
--- delete from AdventureWorksDW.Sales.Fact_SalesOrderDetail
 
-select count(*) from AdventureWorksDW.Sales.Fact_SalesOrderDetail
+USE adventureworksdw
+EXEC sp_help 'Sales.Dim_salesPerson';
