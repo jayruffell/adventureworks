@@ -6,14 +6,29 @@ import numpy as np
 import helpers as hp # cant run interactively for some reason.
 import helpers_sql as hpsql # cant run interactively for some reason.
 import argparse
+import logging
+import os
+
+# COnfigure logging
+log_file_path = os.path.join(os.path.dirname(__file__), "script.log")
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,  # Set the logging level
+    format='%(asctime)s - %(levelname)s - %(message)s',  # Format for log messages
+    handlers=[
+        logging.FileHandler(log_file_path),  # Log to a file
+        logging.StreamHandler()  # Also log to console
+    ]
+)
 
 def main(start_year_for_db, end_year_for_db_excl, db_name, table_name):
     """pull one year of holidays by date from an api (only a few years' data available), convert to a many-year dataframe and a flag for hol or not, and save to SQL Server (behavour set to REPLACE any existing table). Returns True if successful and False otherwise."""
 
-    print(f"Start Date: {start_year_for_db}")
-    print(f"End Date: {end_year_for_db_excl}")
-    print(f"DB Name: {db_name}")
-    print(f"Table Name: {table_name}")
+    logging.info(f"Start Date: {start_year_for_db}")
+    logging.info(f"End Date: {end_year_for_db_excl}")
+    logging.info(f"DB Name: {db_name}")
+    logging.info(f"Table Name: {table_name}")
 
     # -----------
     # get api data

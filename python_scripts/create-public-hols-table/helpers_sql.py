@@ -3,6 +3,7 @@ import pyodbc
 import requests
 import pandas as pd
 import numpy as np
+import logging
 
 # Note it was a pain in the butt to get the connection string right in SQL alchemy!!!
 def save_to_db(df, db_name, table_name):
@@ -26,13 +27,13 @@ def save_to_db(df, db_name, table_name):
     #     "encrypt=yes&"
     #     "trustServerCertificate=yes"
     # )
-    # print(connection_string_sqlalchemy)
+    # logging.info(connection_string_sqlalchemy)
     # engine = create_engine(connection_string_sqlalchemy)
     
     # # TEST CONNECTION IF DESIRED
     # query = "SELECT TOP 10 * FROM Sales.Dim_Date"
     # test_df = pd.read_sql(query, engine)
-    # print(test_df)
+    # logging.info(test_df)
 
     engine = create_engine(connection_string_sqlalchemy)
 
@@ -42,10 +43,9 @@ def save_to_db(df, db_name, table_name):
     except Exception as e:
         operation_successful = False
         print("An error occurred while writing to the database:", e)
-
     # Record the success status
     if operation_successful:
-        print("db operation was successful.")
+        logging.info("db operation was successful.")
     else:
-        print("db operation failed.")
+        logging.info("db operation failed.")
     return operation_successful
