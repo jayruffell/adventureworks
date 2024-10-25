@@ -1,0 +1,59 @@
+# run from run.py or command line - standard convention
+
+import requests
+import pandas as pd
+import numpy as np
+import helpers as hp # cant run interactively for some reason.
+import helpers_sql as hpsql # cant run interactively for some reason.
+import argparse
+
+def main(start_year_for_db, end_year_for_db_excl, db_name, table_name):
+    """pull one year of holidays by date from an api (only a few years' data available), convert to a many-year dataframe and a flag for hol or not, and save to SQL Server (behavour set to REPLACE any existing table). Returns True if successful and False otherwise."""
+
+    print(f"Start Date: {start_year_for_db}")
+    print(f"End Date: {end_year_for_db_excl}")
+    print(f"DB Name: {db_name}")
+    print(f"Table Name: {table_name}")
+
+    # -----------
+    # get api data
+    # -----------
+
+    api_start_date = "2023-01-01" 
+    api_end_date = "2023-12-31"
+
+    url = f"https://openholidaysapi.org/PublicHolidays?countryIsoCode=DE&languageIsoCode=DE&validFrom={api_start_date}&validTo={api_end_date}"
+    response = requests.get(url)
+    holiday_data = response.json()
+
+    # -----------
+    # wrangle
+    # -----------
+
+    # Convert to DataFrame
+    holiday_df = pd.DataFrame(holiday_data)
+    # holiday_df.info()
+    hols_2023 = holiday_df['startDate']
+    hols_2023 = pd.to_datetime(hols_2023)
+
+    # create df of public hols from start to end year, using same days and months each yr.
+    all_hols_df = hp.create_hols_df(hols_1_yr=hols_2023, start_year_for_db=start_year_for_db, end_year_for_db_excl=end_year_for_db_excl)
+
+    # join public hols df with a full df of all dates, and a flag for public hol or not
+    final_hols_df = hp.create_full_df(start_year_for_db, end_year_for_db_excl, all_hols_df)
+
+    success = hpsql.save_to_db(final_hols_df, db_name, table_name)
+    return success
+
+# Notes on below, from chatgpt
+# -- "The if __name__ == "__main__": block ensures that the main() function runs only when the script is executed directly, not when imported as a module. This is a common pattern in Python."
+# -- the parsing stuff allows passing args in from run.py OR cmdline.
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Process start and end dates.")
+    parser.add_argument("start_year_for_db", type=int)
+    parser.add_argument("end_year_for_db_excl", type=int)
+    parser.add_argument("db_name", type=str)
+    parser.add_argument("table_name", type=str)
+    args = parser.parse_args()
+
+    main(args.start_year_for_db, args.end_year_for_db_excl, args.db_name, args.table_name)
