@@ -9,7 +9,7 @@ import argparse
 import logging
 import os
 
-# COnfigure logging
+# COnfigure logging - note can also just redirect output when running from command line, e.g. python main.py ... > output.log 2>&1.
 log_file_path = os.path.join(os.path.dirname(__file__), "script.log")
 
 # Configure logging
