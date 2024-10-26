@@ -1,4 +1,5 @@
 from sqlalchemy import create_engine, text
+import traceback
 import pyodbc
 import requests
 import pandas as pd
@@ -42,7 +43,8 @@ def save_to_db(df, db_name, table_name):
         operation_successful = True
     except Exception as e:
         operation_successful = False
-        print("An error occurred while writing to the database:", e)
+        logging.error("An error occurred while writing to the database: %s", e)
+        logging.error("Stack Trace:\n%s", traceback.format_exc())   
     # Record the success status
     if operation_successful:
         logging.info("db operation was successful.")

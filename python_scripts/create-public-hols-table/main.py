@@ -22,6 +22,10 @@ logging.basicConfig(
     ]
 )
 
+# # TEMP troubleshooting environmental variable differences between  manual powershell runs and task scheduler
+# for key, value in os.environ.items():
+#     logging.info(f"{key}={value}")
+
 def main(start_year_for_db, end_year_for_db_excl, db_name, table_name):
     """pull one year of holidays by date from an api (only a few years' data available), convert to a many-year dataframe and a flag for hol or not, and save to SQL Server (behavour set to REPLACE any existing table). Returns True if successful and False otherwise."""
 
