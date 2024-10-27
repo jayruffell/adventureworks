@@ -1,6 +1,7 @@
 *.csv
 tmp.sql
 **/script.log
+**/*.pbix
 
 # Ignore Python cache files
 **/__pycache__/
