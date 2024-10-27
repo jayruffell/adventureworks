@@ -1,1 +1,3 @@
-SELECT * FROM AdventureWorksDW.Sales.Dim_Date
+-- SELECT CONVERT(VARCHAR(8), date, 112) FROM staging.dbo.holidays
+
+SELECT top 10 * FROM AdventureWorksDW.Sales.Dim_Date
