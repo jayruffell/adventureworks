@@ -1,7 +1,8 @@
 -- from chatgpt - not part of the tutorial but I wanted to play around with this.
-ALTER TABLE DimDate
+USE AdventureWorksDW;
+
+ALTER TABLE Sales.Dim_Date
 ADD Year INT,
     Quarter INT,
     Month INT,
-    DayOfWeek VARCHAR(20),
-    IsPublicHoliday BIT;
+    DayOfWeek VARCHAR(20);
