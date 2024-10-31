@@ -4,12 +4,6 @@
 USE AdventureWorksDW;
 GO
 
-IF OBJECT_ID('Sales.Fact_salesorderDetail', 'U') IS NOT NULL
-BEGIN
-    DROP TABLE Sales.Fact_SalesOrderDetail;
-END
-GO
-
 CREATE TABLE Sales.Fact_SalesOrderDetail (
 	SalesOrderDetailKey int PRIMARY KEY, -- SQL Sever will automatically create a clustered index on the primary key here. JAY NOTE: the type of index to use  is context dependent, so don't just copy this code for other uses.
 	SalesOrderKey INT NOT NULL,

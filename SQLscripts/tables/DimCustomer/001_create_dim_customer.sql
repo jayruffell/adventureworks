@@ -3,12 +3,6 @@
 USE AdventureWorksDW;
 GO
 
-IF OBJECT_ID('Sales.Dim_Customer', 'U') IS NOT NULL
-BEGIN
-    DROP TABLE Sales.Dim_Customer;
-END
-GO
-
 CREATE TABLE Sales.Dim_Customer (
 	CustomerKey INT PRIMARY KEY,
 	StoreName NVARCHAR(50) NOT NULL,

@@ -2,12 +2,6 @@
 USE AdventureWorksDW;
 GO
 
-IF OBJECT_ID('Sales.Dim_Product', 'U') IS NOT NULL
-BEGIN
-    DROP TABLE Sales.Dim_Product;
-END
-GO
-
 CREATE TABLE Sales.Dim_Product ( -- OLTP data does not come from Sales schema, but the DW is gonna be for doing sales reporting and analysis. So good schema to use.
 	ProductKey INT PRIMARY KEY,
 	ProductName NVARCHAR(60) NOT NULL,
