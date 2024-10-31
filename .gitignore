@@ -6,3 +6,6 @@ tmp.sql
 # Ignore Python cache files
 **/__pycache__/
 **/*.pyc
+SQLscripts/.vs/slnx.sqlite
+SQLscripts/.vs/VSWorkspaceState.json
+SQLscripts/.vs/SQLscripts/v15/.ssms_suo
