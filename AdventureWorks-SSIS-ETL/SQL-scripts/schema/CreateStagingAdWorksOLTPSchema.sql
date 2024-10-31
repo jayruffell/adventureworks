@@ -1,0 +1,5 @@
+USE staging;
+GO
+
+CREATE SCHEMA AdWorksOLTP;
+GO
