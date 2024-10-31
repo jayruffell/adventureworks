@@ -3,3 +3,13 @@ Purpose of this subproject:
 2.	The purpose of this subproject is to *redo the loading* using SSIS - as is described in the tutorial per the “parent” readme. I didn’t want to undo the original attempt (loading with SQL scripts), I just want to create a copy of the database and tables and load using this different method.
 3.	So, in this subproject my plan is to copy the create database/schema/table statements from the parent directory scripts, but use SSIS instead of the “load” scripts.
 
+---------------
+SSIS pipeline help
+---------------
+
+When I first opened a new SSIS integration services package in Visual Studio it popped up with some "getting started" links. Only skimmed through these, here they are below if I want more detailed understanding:
+
+https://learn.microsoft.com/en-us/sql/integration-services/integration-services-tutorials?view=sql-server-ver16
+https://learn.microsoft.com/en-us/sql/integration-services/data-flow/data-flow?view=sql-server-ver16
+https://learn.microsoft.com/en-us/sql/integration-services/control-flow/control-flow?view=sql-server-ver16
+

@@ -15,6 +15,8 @@ https://robinphetsavongdata.wordpress.com/2019/06/18/part-1-designing-and-buildi
 https://robinphetsavongdata.wordpress.com/2019/06/19/part-2-designing-and-building-the-data-warehouse-dimension-tables/
 https://robinphetsavongdata.wordpress.com/2019/06/26/99/
 https://robinphetsavongdata.wordpress.com/2019/07/03/part-4-automating-a-data-pipeline/
+ and this one also useful for understanding SSIS  a bit better, since the above links are light on the detail  
+https://www.youtube.com/watch?v=cYu-cP8qsl0
 
 See also my Confluence page for learnings I got from reading the above tutorials + talking with ChatGPT.
 
