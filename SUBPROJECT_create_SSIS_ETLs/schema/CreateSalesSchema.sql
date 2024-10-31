@@ -1,0 +1,5 @@
+USE AdventureWorksDW_SSIS;
+GO
+
+CREATE SCHEMA Sales;
+GO

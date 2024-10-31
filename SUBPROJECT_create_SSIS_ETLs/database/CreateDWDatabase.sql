@@ -1,0 +1,2 @@
+CREATE DATABASE AdventureWorksDW_SSIS;
+GO
