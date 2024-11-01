@@ -1,0 +1,2 @@
+use AdventureWorksDW_SSIS
+drop table Sales.Fact_SalesOrderDetail

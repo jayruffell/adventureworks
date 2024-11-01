@@ -5,10 +5,10 @@ GO
 
 CREATE TABLE Sales.Dim_SalesPerson (
 	SalesPersonKey INT PRIMARY KEY,
-	FirstName NVARCHAR(50) NOT NULL,
-	MiddleName NVARCHAR(50) NOT NULL,
-	LastName NVARCHAR(50) NOT NULL,
-	FullName NVARCHAR(100) NOT NULL,
+	FirstName NVARCHAR(50) NULL,
+	MiddleName NVARCHAR(50) NULL,
+	LastName NVARCHAR(50) NULL,
+	FullName NVARCHAR(100) NULL,
 	Territory NVARCHAR(50) NOT NULL,
 	CountryRegionCode NVARCHAR(10) NOT NULL,
 	TerritoryGroup NVARCHAR(50) NOT NULL,
