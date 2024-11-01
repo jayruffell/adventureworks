@@ -1,6 +1,6 @@
 INSERT INTO staging.[AdWorksOLTP].[SalesOrderHeader]
 SELECT
-	[SalesOrderID] [int],
+	[SalesOrderID],
 	[RevisionNumber],
 	[OrderDate],
 	[DueDate],
