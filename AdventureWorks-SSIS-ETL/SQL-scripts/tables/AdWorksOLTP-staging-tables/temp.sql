@@ -1,0 +1,2 @@
+use staging
+drop table AdWorksOLTP.SalesOrderHeader

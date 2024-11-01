@@ -10,7 +10,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [AdWorksOLTP].[UnitMeasure](
 	[UnitMeasureCode] [nchar](3) NOT NULL,
-	[Name] [varchar] NOT NULL,
+	[Name] [varchar] (200) NOT NULL,
 	[ModifiedDate] [datetime] NOT NULL,
  CONSTRAINT [PK_UnitMeasure_UnitMeasureCode] PRIMARY KEY CLUSTERED 
 (

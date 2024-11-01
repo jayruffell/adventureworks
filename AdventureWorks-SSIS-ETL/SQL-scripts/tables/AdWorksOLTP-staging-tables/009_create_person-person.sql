@@ -10,16 +10,16 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [AdWorksOLTP].[Person](
 	[BusinessEntityID] [int] NOT NULL,
-	[PersonType] [nchar](2) NOT NULL,
-	[NameStyle] [varchar] NOT NULL,
-	[Title] [nvarchar](8) NULL,
-	[FirstName] [varchar] NOT NULL,
-	[MiddleName] [varchar] NULL,
-	[LastName] [varchar] NOT NULL,
-	[Suffix] [nvarchar](10) NULL,
-	[EmailPromotion] [int] NOT NULL,
-	[AdditionalContactInfo] [varchar] NULL,
-	[Demographics] [varchar] NULL,
+	-- [PersonType] [nchar](2) NOT NULL,
+	-- [NameStyle] [varchar] (200) NOT NULL, -- UDT workaround
+	-- [Title] [nvarchar](8) NULL,
+	[FirstName] [nvarchar] (200) NOT NULL,
+	[MiddleName] [nvarchar] (200) NULL,
+	[LastName] [nvarchar] (200) NULL, 
+	-- [Suffix] [nvarchar](10) NULL,
+	-- [EmailPromotion] [int] NOT NULL,
+	-- [AdditionalContactInfo] [varchar] NULL, -- UDT workaround
+	-- [Demographics] [varchar] NULL,
 	[rowguid] [uniqueidentifier] ROWGUIDCOL  NOT NULL,
 	[ModifiedDate] [datetime] NOT NULL,
  CONSTRAINT [PK_Person_BusinessEntityID] PRIMARY KEY CLUSTERED 

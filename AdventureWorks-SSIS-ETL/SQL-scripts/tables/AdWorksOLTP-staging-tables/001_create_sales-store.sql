@@ -4,9 +4,9 @@ GO
 
 CREATE TABLE [AdWorksOLTP].[Store](
 	[BusinessEntityID] [int] NOT NULL,
-	[Name] [varchar] NOT NULL,
+	[Name] [varchar] (200) NOT NULL,
 	[SalesPersonID] [int] NULL,
-	[Demographics] [varchar] NULL,
+	-- [Demographics] [varchar] NULL, -- user defined type I can't easily convert.
 	[rowguid] [uniqueidentifier] ROWGUIDCOL  NOT NULL,
 	[ModifiedDate] [datetime] NOT NULL,
  CONSTRAINT [PK_Store_BusinessEntityID] PRIMARY KEY CLUSTERED 

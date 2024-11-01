@@ -9,10 +9,10 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [AdWorksOLTP].[ProductModel](
-	[ProductModelID] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [varchar] NOT NULL,
-	[CatalogDescription] [varchar] NULL,
-	[Instructions] [varchar] NULL,
+	[ProductModelID] [int] NOT NULL,
+	[Name] [varchar] (200) NOT NULL,
+	-- [CatalogDescription] [varchar] NULL, -- UDT col that isn't easliy convertered. shoulda copied UDT types over, but meh.
+	-- [Instructions] [varchar] NULL, -- as above
 	[rowguid] [uniqueidentifier] ROWGUIDCOL  NOT NULL,
 	[ModifiedDate] [datetime] NOT NULL,
  CONSTRAINT [PK_ProductModel_ProductModelID] PRIMARY KEY CLUSTERED 

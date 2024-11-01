@@ -10,14 +10,14 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [AdWorksOLTP].[SalesOrderDetail](
 	[SalesOrderID] [int] NOT NULL,
-	[SalesOrderDetailID] [int] IDENTITY(1,1) NOT NULL,
+	[SalesOrderDetailID] [int] NOT NULL,
 	[CarrierTrackingNumber] [nvarchar](25) NULL,
 	[OrderQty] [smallint] NOT NULL,
 	[ProductID] [int] NOT NULL,
 	[SpecialOfferID] [int] NOT NULL,
 	[UnitPrice] [money] NOT NULL,
 	[UnitPriceDiscount] [money] NOT NULL,
-	[LineTotal]  AS (isnull(([UnitPrice]*((1.0)-[UnitPriceDiscount]))*[OrderQty],(0.0))),
+	[LineTotal] [money] NOT NULL,
 	[rowguid] [uniqueidentifier] ROWGUIDCOL  NOT NULL,
 	[ModifiedDate] [datetime] NOT NULL,
  CONSTRAINT [PK_SalesOrderDetail_SalesOrderID_SalesOrderDetailID] PRIMARY KEY CLUSTERED 

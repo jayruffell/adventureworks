@@ -9,8 +9,8 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [AdWorksOLTP].[SalesTerritory](
-	[TerritoryID] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [varchar] NOT NULL,
+	[TerritoryID] [int] NOT NULL,
+	[Name] [varchar] (200) NOT NULL,
 	[CountryRegionCode] [nvarchar](3) NOT NULL,
 	[Group] [nvarchar](50) NOT NULL,
 	[SalesYTD] [money] NOT NULL,

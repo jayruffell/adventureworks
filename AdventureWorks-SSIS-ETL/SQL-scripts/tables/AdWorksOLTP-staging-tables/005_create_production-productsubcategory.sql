@@ -9,9 +9,9 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [AdWorksOLTP].[ProductSubcategory](
-	[ProductSubcategoryID] [int] IDENTITY(1,1) NOT NULL,
+	[ProductSubcategoryID] [int] NOT NULL,
 	[ProductCategoryID] [int] NOT NULL,
-	[Name] [varchar] NOT NULL,
+	[Name] [varchar](200) NOT NULL,
 	[rowguid] [uniqueidentifier] ROWGUIDCOL  NOT NULL,
 	[ModifiedDate] [datetime] NOT NULL,
  CONSTRAINT [PK_ProductSubcategory_ProductSubcategoryID] PRIMARY KEY CLUSTERED 

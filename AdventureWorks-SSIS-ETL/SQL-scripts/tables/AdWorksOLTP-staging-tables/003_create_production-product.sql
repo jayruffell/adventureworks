@@ -9,11 +9,11 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [AdWorksOLTP].[Product](
-	[ProductID] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [varchar] NOT NULL,
+	[ProductID] [int] NOT NULL,
+	[Name] [varchar] (200) NOT NULL,
 	[ProductNumber] [nvarchar](25) NOT NULL,
-	[MakeFlag] [varchar] NOT NULL,
-	[FinishedGoodsFlag] [varchar] NOT NULL,
+	-- [MakeFlag] [varchar] NOT NULL,
+	-- [FinishedGoodsFlag] [varchar] NOT NULL,
 	[Color] [nvarchar](15) NULL,
 	[SafetyStockLevel] [smallint] NOT NULL,
 	[ReorderPoint] [smallint] NOT NULL,
