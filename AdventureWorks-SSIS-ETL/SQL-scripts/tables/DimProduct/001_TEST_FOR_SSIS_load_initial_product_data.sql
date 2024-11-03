@@ -31,5 +31,5 @@ LEFT JOIN staging.AdWorksOLTP.UnitMeasure UM_Size ON P.SizeUnitMeasureCode = UM_
 LEFT JOIN staging.AdWorksOLTP.UnitMeasure UM_Weight ON P.WeightUnitMeasureCode = UM_Weight.UnitMeasureCode
 GO
 
-TRUNCATE TABLE AdventureWorksDW_SSIS.Sales.Dim_Product
-GO
+-- TRUNCATE TABLE AdventureWorksDW_SSIS.Sales.Dim_Product
+-- GO

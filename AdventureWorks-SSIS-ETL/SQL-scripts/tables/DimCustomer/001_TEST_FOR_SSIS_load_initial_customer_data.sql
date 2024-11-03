@@ -14,6 +14,6 @@ LEFT JOIN staging.AdWorksOLTP.Store s ON c.StoreID = s.BusinessEntityID
 LEFT JOIN staging.AdWorksOLTP.SalesTerritory t ON c.TerritoryID = t.TerritoryID
 GO
 
--- return to empty table
-TRUNCATE TABLE AdventureWorksDW_SSIS.Sales.Dim_Customer
-GO
+-- -- return to empty table
+-- TRUNCATE TABLE AdventureWorksDW_SSIS.Sales.Dim_Customer
+-- GO

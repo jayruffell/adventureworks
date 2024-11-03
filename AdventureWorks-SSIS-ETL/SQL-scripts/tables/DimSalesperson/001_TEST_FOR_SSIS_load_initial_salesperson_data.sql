@@ -18,5 +18,5 @@ LEFT JOIN staging.AdWorksOLTP.Person p ON s.BusinessEntityID = p.BusinessEntityI
 LEFT JOIN staging.AdWorksOLTP.SalesTerritory t ON s.TerritoryID = t.TerritoryID
 GO
 
-TRUNCATE TABLE AdventureWorksDW_SSIS.Sales.Dim_SalesPerson
-GO
+-- TRUNCATE TABLE AdventureWorksDW_SSIS.Sales.Dim_SalesPerson
+-- GO

@@ -4,3 +4,7 @@ SET IsPublicHol = h.is_hol
 FROM AdventureWorksDW_SSIS.Sales.Dim_Date d 
 LEFT JOIN staging.python.holidays h ON 
 d.DateKey = CONVERT(VARCHAR(8), h.date, 112);
+GO
+
+-- TRUNCATE TABLE AdventureWorksDW_SSIS.Sales.Dim_Date
+-- GO

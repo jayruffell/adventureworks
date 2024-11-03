@@ -24,6 +24,6 @@ FROM staging.AdWorksOLTP.SalesOrderDetail SD
 	LEFT JOIN staging.AdWorksOLTP.SalesOrderHeader SH ON SD.SalesOrderID = SH.SalesOrderID
 GO
 
--- return to empty table
-TRUNCATE TABLE AdventureWorksDW_SSIS.Sales.Fact_SalesOrderDetail
-GO
+-- -- return to empty table
+-- TRUNCATE TABLE AdventureWorksDW_SSIS.Sales.Fact_SalesOrderDetail
+-- GO
