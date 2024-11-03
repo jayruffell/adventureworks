@@ -6,3 +6,5 @@ ADD Year INT,
     Quarter INT,
     Month INT,
     DayOfWeek VARCHAR(20);
+
+    SELECT * FROM Sales.Dim_
