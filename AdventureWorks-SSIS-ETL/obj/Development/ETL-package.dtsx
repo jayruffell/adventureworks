@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="11/1/2024 9:59:26 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="DESKTOP-JGNU8D2"
+  DTS:CreatorName="DESKTOP-JGNU8D2\Owner"
+  DTS:DTSID="{2C893CC7-4562-4833-A289-BFE3829174EB}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5685.0"
+  DTS:LocaleID="5129"
+  DTS:ObjectName="ETL-package"
+  DTS:PackageType="5"
+  DTS:VersionBuild="19"
+  DTS:VersionGUID="{2D8220D9-A77B-4368-AAB7-1F7FCF7596BD}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DESKTOP-JGNU8D2\SQLDEV.AdventureWorksDW_SSIS]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{57EC023B-F6F6-47FD-AF70-2405AD8F6F6E}"
+      DTS:ObjectName="DESKTOP-JGNU8D2\SQLDEV.AdventureWorksDW_SSIS">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=DESKTOP-JGNU8D2\SQLDEV;Initial Catalog=AdventureWorksDW_SSIS;Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Auto Translate=False;Application Name=SSIS-Package1-{57EC023B-F6F6-47FD-AF70-2405AD8F6F6E}DESKTOP-JGNU8D2\SQLDEV.AdventureWorksDW_SSIS;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DESKTOP-JGNU8D2\SQLDEV.staging]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{1D9F5898-7BA6-4DFA-9C5B-629B3D4DE856}"
+      DTS:ObjectName="DESKTOP-JGNU8D2\SQLDEV.staging">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=DESKTOP-JGNU8D2\SQLDEV;Initial Catalog=staging;Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Application Name=SSIS-Package1-{1D9F5898-7BA6-4DFA-9C5B-629B3D4DE856}DESKTOP-JGNU8D2\SQLDEV.staging;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\load data into fact table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{3C72F19C-D79B-424D-A3F2-ABCB0E82C6FF}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="load data into fact table"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{57EC023B-F6F6-47FD-AF70-2405AD8F6F6E}"
+          SQLTask:SqlStatementSource="INSERT INTO AdventureWorksDW_SSIS.Sales.Fact_SalesOrderDetail&#xA;SELECT&#xA;&#x9;SD.SalesOrderDetailID AS SalesOrderDetailKey,&#xA;&#x9;SH.SalesOrderID AS SalesOrderKey,&#xA;&#x9;SD.ProductID AS ProductKey,&#xA;&#x9;SH.CustomerID AS SalesOrderCustomerKey,&#xA;&#x9;ISNULL(SH.SalesPersonID,0) AS SalesPersonKey,&#xA;&#x9;SH.TerritoryID AS TerritoryKey,&#xA;&#x9;CONVERT(INT, CONVERT(VARCHAR(8),SD.ModifiedDate,112)) AS SalesOrderDetailModifiedDateKey,&#xA;&#x9;CONVERT(INT, CONVERT(VARCHAR(8),SH.OrderDate,112)) AS SalesOrderDateKey,&#xA;&#x9;CONVERT(INT, CONVERT(VARCHAR(8),SH.DueDate,112)) AS SalesOrderDueDateKey,&#xA;&#x9;CONVERT(INT, CONVERT(VARCHAR(8),SH.ShipDate,112)) AS SalesOrderShipDateKey,&#xA;&#x9;CONVERT(INT, CONVERT(VARCHAR(8),SH.ModifiedDate,112)) AS SalesOrderModifiedDateKey,&#xA;&#x9;SD.OrderQty,&#xA;&#x9;SD.UnitPrice,&#xA;&#x9;SD.UnitPriceDiscount,&#xA;&#x9;SD.LineTotal,&#xA;&#x9;SH.SubTotal AS SalesOrderSubTotal,&#xA;&#x9;SH.TaxAmt AS SalesOrderTaxAmount,&#xA;&#x9;SH.Freight AS SalesOrderFreightAmount,&#xA;&#x9;SH.TotalDue AS SalesOrderTotalDueAmount&#xA;FROM staging.AdWorksOLTP.SalesOrderDetail SD&#xA;&#x9;LEFT JOIN staging.AdWorksOLTP.SalesOrderHeader SH ON SD.SalesOrderID = SH.SalesOrderID&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\recreate NC indexes"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{23D8A90F-B150-446D-9553-0593114F4736}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="recreate NC indexes"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{57EC023B-F6F6-47FD-AF70-2405AD8F6F6E}"
+          SQLTask:SqlStatementSource="CREATE nonclustered index NI_ProductKey ON Sales.Fact_SalesOrderDetail (ProductKey);&#xA;-- CREATE nonclustered index NI_SalesOrderStatusKey ON Sales.Fact_SalesOrderDetail (SalesOrderStatusKey);&#xA;CREATE nonclustered index NI_SalesOrderCustomerKey ON Sales.Fact_SalesOrderDetail (SalesOrderCustomerKey);&#xA;CREATE nonclustered index NI_SalesPersonKey ON Sales.Fact_SalesOrderDetail (SalesPersonKey);&#xA;CREATE nonclustered index NI_TerritoryKey ON Sales.Fact_SalesOrderDetail (TerritoryKey);&#xA;CREATE nonclustered index NI_SalesOrderDetailModifiedDateKey ON Sales.Fact_SalesOrderDetail (SalesOrderDetailModifiedDateKey);&#xA;CREATE nonclustered index NI_SalesOrderDateKey ON Sales.Fact_SalesOrderDetail (SalesOrderDateKey);&#xA;CREATE nonclustered index NI_SalesOrderDueDateKey ON Sales.Fact_SalesOrderDetail (SalesOrderDueDateKey);&#xA;CREATE nonclustered index NI_SalesOrderShipDateKey ON Sales.Fact_SalesOrderDetail (SalesOrderShipDateKey);&#xA;CREATE nonclustered index NI_SalesOrderModifiedDateKey ON Sales.Fact_SalesOrderDetail (SalesOrderModifiedDateKey);&#xA;-- CREATE nonclustered index NI_BillToAddressKey ON Sales.Fact_SalesOrderDetail (BillToAddressKey);&#xA;-- CREATE nonclustered index NI_ShipToAddressKey ON Sales.Fact_SalesOrderDetail (ShipToAddressKey);&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\truncate n drop indexes"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="truncate target DW table (*something you would typically only do for staging target tables*) and drop non-clustered indexes from source table"
+      DTS:DTSID="{4752D05A-CAD4-4637-A2AC-7456C5C477B3}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="truncate n drop indexes"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{57EC023B-F6F6-47FD-AF70-2405AD8F6F6E}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [Sales].[Fact_SalesOrderDetail]&#xA;GO&#xA;&#xA;DROP index NI_ProductKey ON Sales.Fact_SalesOrderDetail;&#xA;DROP index NI_SalesOrderCustomerKey ON Sales.Fact_SalesOrderDetail;&#xA;DROP index NI_SalesPersonKey ON Sales.Fact_SalesOrderDetail;&#xA;DROP index NI_TerritoryKey ON Sales.Fact_SalesOrderDetail;&#xA;DROP index NI_SalesOrderDetailModifiedDateKey ON Sales.Fact_SalesOrderDetail;&#xA;DROP index NI_SalesOrderDateKey ON Sales.Fact_SalesOrderDetail;&#xA;DROP index NI_SalesOrderDueDateKey ON Sales.Fact_SalesOrderDetail;&#xA;DROP index NI_SalesOrderShipDateKey ON Sales.Fact_SalesOrderDetail;&#xA;DROP index NI_SalesOrderModifiedDateKey ON Sales.Fact_SalesOrderDetail;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{3381DD2A-7928-43B5-BB9B-59A1AD3641EB}"
+      DTS:From="Package\truncate n drop indexes"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\load data into fact table" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{18F13AE3-FA87-4490-9451-E8983C53DBCE}"
+      DTS:From="Package\load data into fact table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\recreate NC indexes" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="168,41.6"
+          Id="Package\truncate n drop indexes"
+          TopLeft="220.500004682404,20.596773736373" />
+        <NodeLayout
+          Size="189.6,41.6"
+          Id="Package\load data into fact table"
+          TopLeft="221.26923416167,118.338708077304" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="307.284619422037,62.196773736373">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,56.1419343409315"
+              Start="0,0"
+              End="0,48.6419343409315">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,48.6419343409315" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="176.8,41.6"
+          Id="Package\recreate NC indexes"
+          TopLeft="230.50000490019,235.306444653673" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="315.28461953093,159.938708077304">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,75.3677365763689"
+              Start="0,0"
+              End="0,67.8677365763689">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,67.8677365763689" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

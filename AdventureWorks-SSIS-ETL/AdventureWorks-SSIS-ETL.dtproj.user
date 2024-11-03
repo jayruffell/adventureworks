@@ -8,6 +8,8 @@
         <UseWinAuth>false</UseWinAuth>
         <WinAuthUserName />
         <WinAuthDomain />
+        <ServerName>DESKTOP-JGNU8D2\SQLDEV</ServerName>
+        <PathOnServer>/SSISDB/AdventureWorksSSIS/AdventureWorks-SSIS-ETL</PathOnServer>
         <UserIDs />
         <UserPasswords />
         <OfflineMode>false</OfflineMode>
