@@ -11,8 +11,8 @@
   DTS:LocaleID="5129"
   DTS:ObjectName="ETL-package"
   DTS:PackageType="5"
-  DTS:VersionBuild="19"
-  DTS:VersionGUID="{2D8220D9-A77B-4368-AAB7-1F7FCF7596BD}">
+  DTS:VersionBuild="28"
+  DTS:VersionGUID="{489378CF-EE40-4F4E-B979-6303A3A91C5B}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -78,6 +78,103 @@
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
+      DTS:refId="Package\Sequence Container"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{45D6C7F8-5FC9-47A0-BADC-A0117874A77B}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\load data into dim cust"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{4816c78d-a820-4d82-a33d-91de9b19ef4a}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="load data into dim cust"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{57EC023B-F6F6-47FD-AF70-2405AD8F6F6E}"
+              SQLTask:SqlStatementSource="INSERT INTO AdventureWorksDW_SSIS.Sales.Dim_Customer&#xA;SELECT&#xA;&#x9;CustomerID AS CustomerKey,&#xA;&#x9;ISNULL(s.[Name], 'N/A') AS StoreName,&#xA;&#x9;t.[Name] AS Territory,&#xA;&#x9;t.CountryRegionCode,&#xA;&#x9;t.[Group] AS TerritoryGroup,&#xA;-- deal with date cols - see my Confluence page for benefits of having &quot;mini snowflake schema&quot; of dim product joinging to dim date. Code below re-formats date as YYYYMMDD (112 is the format code) and then converts to integer. ChatGPT can explain why this is a good idea.&#xA;ISNULL(CONVERT(INT, CONVERT(VARCHAR(8), s.ModifiedDate, 112)), 99991231) AS ModifiedDateKey&#xA;FROM staging.AdWorksOLTP.Customer c&#xA;LEFT JOIN staging.AdWorksOLTP.Store s ON c.StoreID = s.BusinessEntityID&#xA;LEFT JOIN staging.AdWorksOLTP.SalesTerritory t ON c.TerritoryID = t.TerritoryID&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\load data into dim date"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{f1bacc1a-78db-4272-aabe-bf86aac01911}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="load data into dim date"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="2">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{57EC023B-F6F6-47FD-AF70-2405AD8F6F6E}"
+              SQLTask:SqlStatementSource="-- NB I did my development in multiple stages - add some cols, load some data, repeat..... And as a hack I am loading the data in corresponding batches. But it would probably be better to have a single SQL statement that loads all columns.&#xA;&#xA;WITH DateRange AS (&#xA;    SELECT CAST('1980-01-01' AS DATE) AS DateValue&#xA;    UNION ALL&#xA;    SELECT DATEADD(DAY, 1, DateValue)&#xA;    FROM DateRange&#xA;    WHERE DateValue &lt; '2030-12-31'&#xA;),&#xA;-- jay adding default value, using default used in tutorial thruout.&#xA;DateRange_inc_Default AS (&#xA;&#x9;SELECT * From DateRange&#xA;&#x9;UNION ALL&#xA;&#x9;Select CAST('9999-12-31' AS DATE) AS DateValue&#xA;)&#xA;&#xA;INSERT INTO AdventureWorksDW_SSIS.Sales.Dim_Date (DateKey, DateValue)&#xA;SELECT &#xA;    CONVERT(INT, CONVERT(VARCHAR(8), DateValue, 112)) AS DateKey,&#xA;    DateValue&#xA;FROM DateRange_inc_Default&#xA;OPTION (MAXRECURSION 0);&#xA;&#xA;GO&#xA;&#xA;-- from chatgpt - not part of the tutorial but I wanted to play around with this.&#xA;UPDATE AdventureWorksDW_SSIS.Sales.Dim_Date&#xA;SET Year = YEAR([DateValue]),&#xA;    Quarter = CASE &#xA;                WHEN MONTH([DateValue]) IN (1, 2, 3) THEN 1&#xA;                WHEN MONTH([DateValue]) IN (4, 5, 6) THEN 2&#xA;                WHEN MONTH([DateValue]) IN (7, 8, 9) THEN 3&#xA;                ELSE 4&#xA;              END,&#xA;    Month = MONTH([DateValue]),&#xA;    DayOfWeek = DATENAME(WEEKDAY, [DateValue]);&#xA;&#xA;GO&#xA;&#xA;-- from chatgpt - not part of the tutorial but I wanted to play around with this.&#xA;UPDATE AdventureWorksDW_SSIS.Sales.Dim_Date&#xA;SET IsPublicHol = h.is_hol&#xA;FROM AdventureWorksDW_SSIS.Sales.Dim_Date d &#xA;LEFT JOIN staging.python.holidays h ON &#xA;d.DateKey = CONVERT(VARCHAR(8), h.date, 112);&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\load data into dim product"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{66332786-1a72-4419-b5b3-bbf19ed5f894}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="load data into dim product"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="3">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{57EC023B-F6F6-47FD-AF70-2405AD8F6F6E}"
+              SQLTask:SqlStatementSource="INSERT INTO AdventureWorksDW_SSIS.Sales.Dim_Product&#xA;SELECT&#xA;P.ProductID AS ProductKey,&#xA;P.[Name] AS ProductName,&#xA;ISNULL(PM.[Name],'N/A') AS ProductModel,&#xA;ISNULL(PC.[Name],'N/A') AS ProductCategory,&#xA;P.ProductNumber AS ProductNumber,&#xA;-- P.MakeFlag,&#xA;-- P.FinishedGoodsFlag,&#xA;ISNULL(P.Color,'N/A') AS Color,&#xA;ISNULL(P.Size,'N/A') AS Size,&#xA;ISNULL(UM_Size.[Name],'N/A') AS SizeUnitMeasure,&#xA;ISNULL(P.[Weight],0) AS [Weight],&#xA;ISNULL(UM_Weight.[Name],'N/A') AS WeightUnitMeasure,&#xA;ISNULL(CAST(P.ProductLine AS NCHAR(3)),'N/A') ProductLine,&#xA;ISNULL(CAST(P.Class AS NCHAR(3)),'N/A') Class,&#xA;ISNULL(CAST(P.Style AS NCHAR(3)),'N/A') Style,&#xA;-- deal with date cols - see my Confluence page for benefits of having &quot;mini snowflake schema&quot; of dim product joinging to dim date. Code below re-formats date as YYYYMMDD (112 is the format code) and then converts to integer. ChatGPT can explain why this is a good idea.&#xA;CONVERT(INT, CONVERT(VARCHAR(8), P.SellStartDate, 112)) AS SellStartDateKey,&#xA;ISNULL(CONVERT(INT, CONVERT(VARCHAR(8), P.SellEndDate, 112)),'99991231') AS SellEndDateKey,&#xA;ISNULL(CONVERT(INT, CONVERT(VARCHAR(8), DiscontinuedDate, 112)),'99991231') AS DiscontinuedDateKey,&#xA;CONVERT(INT, CONVERT(VARCHAR(8), P.ModifiedDate, 112)) AS ModifiedDateKey&#xA;&#xA;FROM staging.AdWorksOLTP.Product P&#xA;LEFT JOIN staging.AdWorksOLTP.ProductSubcategory PSC ON P.ProductSubcategoryID = PSC.ProductSubcategoryID&#xA;LEFT JOIN staging.AdWorksOLTP.ProductCategory PC ON PSC.ProductCategoryID = PC.ProductCategoryID&#xA;LEFT JOIN staging.AdWorksOLTP.ProductModel PM ON P.ProductModelID = PM.ProductModelID&#xA;LEFT JOIN staging.AdWorksOLTP.UnitMeasure UM_Size ON P.SizeUnitMeasureCode = UM_Size.UnitMeasureCode&#xA;LEFT JOIN staging.AdWorksOLTP.UnitMeasure UM_Weight ON P.WeightUnitMeasureCode = UM_Weight.UnitMeasureCode&#xA;GO&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\load data into dim salesperson"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{6ac3b053-4a39-4eea-a2a3-7d77d0502445}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="load data into dim salesperson"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="4">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{57EC023B-F6F6-47FD-AF70-2405AD8F6F6E}"
+              SQLTask:SqlStatementSource="INSERT INTO AdventureWorksDW_SSIS.Sales.Dim_SalesPerson&#xA;SELECT&#xA;S.BusinessEntityID AS SalesPersonKey,&#xA;&#x9;FirstName,&#xA;&#x9;ISNULL (MiddleName, 'N/A'),&#xA;&#x9;LastName,&#xA;&#x9;FirstName + ' ' + LastName AS FullName,&#xA;&#x9;ISNULL (t.Name, 'N/A') AS Territory,&#xA;&#x9;ISNULL (t.CountryRegionCode, 'N/A') AS CountryRegionCode,&#xA;&#x9;ISNULL (t.[Group], 'N/A') AS TerritoryGroup,&#xA;-- deal with date cols - see my Confluence page for benefits of having &quot;mini snowflake schema&quot; of dim product joinging to dim date. Code below re-formats date as YYYYMMDD (112 is the format code) and then converts to integer. ChatGPT can explain why this is a good idea.&#xA;CONVERT(INT, CONVERT(VARCHAR(8), s.ModifiedDate, 112)) AS ModifiedDateKey&#xA;FROM staging.AdWorksOLTP.Salesperson s&#xA;LEFT JOIN staging.AdWorksOLTP.Person p ON s.BusinessEntityID = p.BusinessEntityID&#xA;LEFT JOIN staging.AdWorksOLTP.SalesTerritory t ON s.TerritoryID = t.TerritoryID&#xA;GO&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\truncate all Dims"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="truncate target DW tables (*something you would typically only do for staging target tables*)"
+      DTS:DTSID="{45a19d7b-f3d0-481e-a3c0-5832c1ac5cc1}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="truncate all Dims"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{57EC023B-F6F6-47FD-AF70-2405AD8F6F6E}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [Sales].[Dim_Customer]&#xA;GO&#xA;TRUNCATE TABLE [Sales].[Dim_Product]&#xA;GO&#xA;TRUNCATE TABLE [Sales].[Dim_Salesperson]&#xA;GO&#xA;TRUNCATE TABLE [Sales].[Dim_Date]&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
       DTS:refId="Package\truncate n drop indexes"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="truncate target DW table (*something you would typically only do for staging target tables*) and drop non-clustered indexes from source table"
@@ -112,6 +209,14 @@
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
       DTS:To="Package\recreate NC indexes" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{35053126-AC5E-4D05-81F2-9251E5BD3C15}"
+      DTS:From="Package\truncate all Dims"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Sequence Container" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -124,18 +229,49 @@
     design-time-name="Package">
     <LayoutInfo>
       <GraphLayout
-        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="168,41.6"
-          Id="Package\truncate n drop indexes"
-          TopLeft="220.500004682404,20.596773736373" />
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="189.6,41.6"
           Id="Package\load data into fact table"
-          TopLeft="221.26923416167,118.338708077304" />
+          TopLeft="85.5000004355725,197.17741536725" />
+        <NodeLayout
+          Size="176.8,41.6"
+          Id="Package\recreate NC indexes"
+          TopLeft="94.7307711740925,314.145151943619" />
+        <NodeLayout
+          Size="189.6,41.6"
+          Id="Package\Sequence Container\load data into dim cust"
+          TopLeft="29.5615471394818,14.8548354586499" />
+        <NodeLayout
+          Size="189.6,41.6"
+          Id="Package\Sequence Container\load data into dim date"
+          TopLeft="29.5615471394818,319.65483545865" />
+        <NodeLayout
+          Size="189.6,41.6"
+          Id="Package\Sequence Container\load data into dim product"
+          TopLeft="29.5615471394818,116.45483545865" />
+        <NodeLayout
+          Size="189.6,41.6"
+          Id="Package\Sequence Container\load data into dim salesperson"
+          TopLeft="29.5615471394818,218.05483545865" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="337.2,416.8"
+          Size="337.2,459.6"
+          Id="Package\Sequence Container"
+          TopLeft="374.230777380999,156.419350101862" />
+        <NodeLayout
+          Size="316,41.6"
+          Id="Package\truncate all Dims"
+          TopLeft="380.576922926148,69.5451641476706" />
+        <NodeLayout
+          Size="168,41.6"
+          Id="Package\truncate n drop indexes"
+          TopLeft="84.7307709563065,99.4354810263193" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="307.284619422037,62.196773736373">
+          TopLeft="171.51538569594,141.035481026319">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -155,13 +291,9 @@
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="176.8,41.6"
-          Id="Package\recreate NC indexes"
-          TopLeft="230.50000490019,235.306444653673" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="315.28461953093,159.938708077304">
+          TopLeft="179.515385804833,238.77741536725">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -173,6 +305,28 @@
                   Capacity="5">
                   <mssgle:LineSegment
                     End="0,67.8677365763689" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="540.703850153574,111.145164147671">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,45.2741859541911"
+              Start="0,0"
+              End="0,37.7741859541911">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,37.7741859541911" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
