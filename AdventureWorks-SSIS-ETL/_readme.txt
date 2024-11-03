@@ -3,6 +3,11 @@ Purpose of this subproject:
 2.	The purpose of this subproject is to *redo the loading* using SSIS - as is described in the tutorial per the “parent” readme. I didn’t want to undo the original attempt (loading with SQL scripts), I just want to create a copy of the database and tables and load using this different method.
 3.	So, in this subproject my plan is to copy the create database/schema/table statements from the parent directory scripts, but use SSIS instead of the “load” scripts.
 
+
+Update: I also created a staging database where I created a copy of the OLTP database to do my loading from. Since this is best practice
+
+Note: as described in the tutorial much of the ETL dev is done in the SSIS extension of Visual Studio. To open the SSIS "solution" click on the .sln file, or open Visual Studio and navigate to this folder.
+
 ---------------
 SSIS pipeline help
 ---------------
