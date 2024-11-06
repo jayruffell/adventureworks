@@ -1,0 +1,9 @@
+<?xml version="1.0"?><DTSConfiguration>
+  <DTSConfigurationHeading>
+    <DTSConfigurationFileInfo GeneratedBy="DESKTOP-JGNU8D2\Owner" GeneratedFromPackageName="Lesson5" GeneratedFromPackageID="{D7EBDC81-81CC-4CC0-96CC-3081EEA7EDC0}" GeneratedDate="5/11/2024 1:45:05 pm"/>
+  </DTSConfigurationHeading>
+  <Configuration ConfiguredType="Property" 
+      Path="\Package.Variables[User::varDirName].Properties[Value]" ValueType="String">
+    <ConfiguredValue>C:\adventureworks\AdventureWorks-MS-tutorial\MS-tutorial-1\New Sample Data</ConfiguredValue>
+  </Configuration>
+</DTSConfiguration>

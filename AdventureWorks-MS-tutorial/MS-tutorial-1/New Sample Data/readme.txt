@@ -1,0 +1,1 @@
+Microsoft tutorial told me to create this folder here and paste the files in. When I am done with that I can delete if I want. Don't like having things in my root directory!

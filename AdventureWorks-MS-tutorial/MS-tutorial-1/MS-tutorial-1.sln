@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{C9674DCB-5085-4A16-B785-4C70DD1589BD}") = "MS-tutorial-1", "MS-tutorial-1.dtproj", "{57F95BDC-B41B-405E-99C7-1026B76D116D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{57F95BDC-B41B-405E-99C7-1026B76D116D}.Development|Default.ActiveCfg = Development
+		{57F95BDC-B41B-405E-99C7-1026B76D116D}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C75D7720-922D-44AC-9AAF-1459ACFD35E5}
+	EndGlobalSection
+EndGlobal
